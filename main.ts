@@ -3,6 +3,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function changeHorizontal (changeAmount: number) {
     vx += changeAmount
+    vx = Math.constrain(vx, -60, 60)
     for (let value of sprites.allOfKind(SpriteKind.Projectile)) {
         value.vx = vx
     }
@@ -60,7 +61,16 @@ mySprite = sprites.create(img`
 mySprite.y = 30
 scene.setBackgroundColor(1)
 vx = 0
+let vy = -120
 game.onUpdateInterval(200, function () {
+    if (vx == 0) {
+        vy = Math.max(vy + -20, -120)
+    } else {
+        vy = Math.min(-120 + Math.abs(vx), 0)
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Projectile)) {
+        value.setVelocity(vx, vy)
+    }
     projectile = sprites.createProjectileFromSide(img`
 . . . . . . . 
 . . . . . . . 
@@ -78,10 +88,6 @@ game.onUpdateInterval(200, function () {
 . . . e . . . 
 . . . e . . . 
 . . . e . . . 
-`, vx, -120)
-    if (vx == 0 || Math.percentChance(50)) {
-        projectile.x = randint(0, 159)
-    } else {
-        projectile.y = randint(60, 120)
-    }
+`, vx, vy)
+    projectile.x = randint(0, 159)
 })
