@@ -57,6 +57,7 @@ mySprite = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
+mySprite.y = 30
 scene.setBackgroundColor(1)
 vx = 0
 game.onUpdateInterval(200, function () {
